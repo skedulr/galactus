@@ -5,12 +5,10 @@ const User = require("../db/users");
 const Booking = require("../db/bookings");
 const axios = require("axios");
 
-// bot callingd
 async function login(req, res) {
   const existingUser = await User.findOne({ uids: [req.body.platform, `${req.body.uid}`] });
   if (existingUser) {
     return res.json({ loggedIn: true });
-    Freq.pd;
   }
 
   const oauth2Client = new google.auth.OAuth2(
@@ -93,8 +91,6 @@ async function postLogin(req, res) {
   return res.send("<h1>Login Successful:)</h1><p>You may close this page.</p>");
 }
 
-// CALLED BY THE BOTS
-
 async function onNaturalMessage(req, res) {
   const platform = [req.body.platform, `${req.body.uid}`];
   const user = await User.findOne({ uids: platform });
@@ -144,12 +140,12 @@ async function onParsedMessage(req, res) {
 
   const author = await User.findOne({ uids: [req.body.platform, `${req.body.uid}`] });
 
-  // await axios.post(new URL("/mail", process.env.MAIL_SERVER), {
-  //   ...req.body,
-  //   author: author.name,
-  //   platform: undefined,
-  //   uid: undefined,
-  // });
+  await axios.post(new URL("/mail", process.env.MAIL_SERVER), {
+    ...req.body,
+    author: author.name,
+    platform: undefined,
+    uid: undefined,
+  });
   return res.json({ ok: true });
 }
 

@@ -35,3 +35,115 @@ The following files are present.
 4. Then the usual drill. `npm install` and then `npm run dev` to start a dev instance
 
 5. Generate a `client-secret.json` from the Google Cloud console.
+
+## Botty Endpoints
+
+A program that is part of `Botty` is expected to use the following endpoints.
+
+### POST /login
+
+**Body**
+
+```json
+{
+  "platform": "discord", //or something else
+  "uid": "unique identifier for platform"
+}
+```
+
+**Response**
+
+```json
+//if user is already logged in
+{"loggedIn": true}
+
+//otherwise
+{"authorizationUrl": "url"}
+```
+
+### POST /message
+
+to parse a natural language message using `mle`.
+
+**Body**
+
+```json
+{
+  "platform": "discord", //or something else
+  "uid": "unique identifier for platform",
+  "message": "some natural message"
+}
+```
+
+**Response**
+
+```json
+{
+  "attendees": [{ "name": "arun kumar", "email": "arun@nitc.ac.in" }],
+  "start_date": "ISO String with time",
+  "end_date": "ISO String with time",
+  "location": "office conference room",
+  "operation": "create",
+  "summary": "sales cadence meeting"
+}
+```
+
+### POST /message-parsed
+
+once the user confirms the parsed message, this function can invoke the invitation emails from `molu`.
+
+**Body**
+
+```json
+{
+  "attendees": [{ "name": "arun kumar", "email": "arun@nitc.ac.in" }],
+  "start_date": "ISO String with time",
+  "end_date": "ISO String with time",
+  "location": "office conference room",
+  "operation": "create",
+  "summary": "sales cadence meeting"
+}
+```
+
+**Response**
+
+```json
+{ "ok": true }
+```
+
+## MLE endpoints
+
+An app that is to be part of `MLE` is expected to implement the following endpoint.
+
+### POST /parse
+
+parse a natural language string for its components.
+
+**Body**
+
+```json
+{
+  "message": "do something for me",
+  "contact_list": [{ "name": "JOEL", "email": "joel@nitc.ac.in" }]
+}
+```
+
+## Molu endpoints
+
+### POST /mail
+
+to send an email
+
+**Body**
+
+```json
+{
+  "attendees": [{ "name": "arun kumar", "email": "arun@nitc.ac.in" }],
+  "start_date": "ISO String with time",
+  "end_date": "ISO String with time",
+  "location": "office conference room",
+  "operation": "create",
+  "summary": "sales cadence meeting",
+  "author": "cliford"
+}
+```
